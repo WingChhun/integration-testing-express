@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const app = require('./app');
-const {$PORT, $DATABASE_URL} = require('./config/keys');
+const {PORT, DATABASE_URL} = require('./config/keys');
 
 let server;
 
-function runServer(databaseUrl = $DATABASE_URL, port = $PORT) {
+function runServer(databaseUrl = DATABASE_URL, port = PORT) {
     return new Promise((resolve, reject) => {
         mongoose.connect(databaseUrl, {
             useNewUrlParser: true

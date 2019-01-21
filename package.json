@@ -1,0 +1,32 @@
+{
+  "name": "mongo-node-express-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate for quickly setting up a Mongodb, node express ap; under the assumption that Mocha and Chai will be used for integration testing",
+  "main": "server/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WingChhun/mongo-node-express-boilerplate.git"
+  },
+  "author": "James Chhun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WingChhun/mongo-node-express-boilerplate/issues"
+  },
+  "homepage": "https://github.com/WingChhun/mongo-node-express-boilerplate#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.5"
+  }
+}

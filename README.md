@@ -1,6 +1,7 @@
-# mongo-node-express-boilerplate
+# integration-testing-express
 
- * Boilerplate for quickly setting up a Mongodb, node express app under the assumption that Mocha and Chai will be used for integration testing
+ * Repository to learn integration testing in an express app using Mocha and Chai as testing libraries/tools
+ * Also testing mocking data using faker
 
 
 ### Objective

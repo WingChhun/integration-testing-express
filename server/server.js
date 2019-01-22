@@ -1,49 +1,70 @@
-const mongoose = require('mongoose');
-const app = require('./app');
+const app = require("./app");
 const {PORT, DATABASE_URL} = require('./config/keys');
 
-let server;
+let server = null;
+/*
+@function: runSErver
+@params: TestDB
+*/
+const runServer = (PORT = 5000, DATABASE_URL) => {
 
-function runServer(databaseUrl = DATABASE_URL, port = PORT) {
     return new Promise((resolve, reject) => {
-        mongoose.connect(databaseUrl, {
+
+        mongoose.connect(DATABASE_URL, {
+            useCreateIndex: true,
             useNewUrlParser: true
-        }, err => {
+        })
+        //$ Success set the server to be exported
+            .then(() => {
+            server = app.listen(PORT, () => {
+                console.log(`Server has started on port ${PORT}`);
+
+                //$ Return from the promise
+                resolve(server);
+            }).on('error', (err) => {
+                mongoose.disconnect();
+                reject(err);
+            });
+
+        }).catch(err => {
+            //! Fail to connect break
             if (err) {
+                console.error(err);
                 return reject(err);
             }
         })
-        server = app.listen(port, () => {
-            console.log(`App listening on port ${port}`);
-            resolve(server);
-        }).on('error', (err) => {
-            mongoose.disconnect();
-            reject(err);
-        });
+
     });
+
 }
 
-function closeServer() {
+/*
+@function: closeServer
+@params:
+@desc:
+*/
+const closeServer = (PORT, DATABASE_URL) => {
+
     return mongoose
         .disconnect()
         .then(() => {
             return new Promise((resolve, reject) => {
-                console.log('Closing server');
+                console.log(`Ending server...`);
+
                 server.close(err => {
                     if (err) {
                         return reject(err);
                     }
-                    resolve();
-                });
-            });
-        });
-}
 
-if (require.main === module) {
-    runServer().catch(err => console.error(err));
+                    //$ Exit: server and mongoose connectrion has ended
+                    resolve();
+                })
+            });
+        })
+
 }
 
 module.exports = {
     runServer,
     closeServer
-};
+}; // for testing

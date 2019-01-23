@@ -20,13 +20,8 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 //Note: don't show the log when it is test
-if (process.env.NODE_ENV !== 'test') {
 
-    //Note: use morgan to log at command line
-
-    //Note: 'combined' outputs the Apache style LOGs
-    app.use(morgan('combined'));
-}
+app.use(morgan('dev'));
 
 //Note: parse application/json and look for raw text
 app.use(bodyParser.json());

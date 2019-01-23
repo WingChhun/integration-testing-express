@@ -23,41 +23,43 @@ describe(`API Books`, () => {
 
     before((done) => {
 
-        //NOTE: Drop all data in the Book collection
+        //Note: start server
 
-        Book
-            .remove({})
-            .then(() => {
-                done();
-            })
-            .catch(err => console.log(err));
+        runServer(TEST_PORT, DATABASE_URL).then(() => {
+            console.log(`API-Books`, "Server has started");
+        }).then(() => {
+            //NOTE: Drop all data in the Book collection
 
+            Book
+                .remove({})
+                .then(() => {
+                    done();
+                })
+                .catch(err => console.log(err));
+        }).catch(err => console.log(err))
     });
 
     //drop db and close server
     after((done) => {
 
-        //Note: Remove all
-        Book
-            .remove({})
-            .then(() => {
-                done();
-            })
-            .catch(err => console.log(err));
+        closeServer(TEST_PORT, DATABASE_URL).then(() => {
+            console.log(`Api-books`, "Server has ended");
+
+            done();
+
+        }).catch(err => console.log(err));
+
     })
 
     describe(`POST routes`, () => {
-        before((done) => {
-            //$ Create a book
-            Book
-                .remove({})
-                .then(() => done());
-        })
 
+        //Note: Remove all in db
         after((done) => {
+
             Book
-                .remove({})
+                .remove()
                 .then(() => done());
+
         })
 
         it(`Should create a book`, (done) => {
@@ -86,20 +88,25 @@ describe(`API Books`, () => {
 
             it(`Should return all books GET /book route`, (done) => {
 
-                return chai
+                chai
                     .request(app)
                     .get("/book")
                     .then((res) => {
 
-                        expect(res.body.length)
+                        expect(res.body[0]._id)
                             .to
-                            .equal(1);
+                            .equal(bookID);
 
                         expect(res.body[0].title)
                             .to
                             .be
                             .a(`string`);
 
+                        expect(res.body[0].title)
+                            .to
+                            .equal(testBook.title)
+
+                        done();
                     })
                     .catch(err => console.log(err));
             })
@@ -108,23 +115,113 @@ describe(`API Books`, () => {
 
                 const bookURL = `/book/${bookID}`;
 
-                return chai
+                chai
                     .request(app)
                     .get(bookURL)
                     .then((res) => {
-                        console.log("res.body", res.body);
-
-                        console.log('\n\nbookID', bookID);
 
                         expect(res.body._id)
                             .to
                             .equal(`${bookID}`);
+
+                        expect(res.body.title)
+                            .to
+                            .equal(testBook.title);
+
+                        done();
 
                     });
 
             });
         });
 
+    }) //* End POST and get routes
+
+    describe(`DETLETE routes`, () => {
+        bookID = null;
+
+        //Note: Create a book in the DB before testing Delete
+        before((done) => {
+            chai
+                .request(app)
+                .post("/book")
+                .send(testBook)
+                .then(res => {
+
+                    bookID = res.body.book._id;
+                    done();
+                })
+                .catch(err => console.log(err));
+        });
+
+        it(`Should delete a book given an id`, () => {
+
+            const successMessage = `Book successfully deleted!`;
+
+            chai
+                .request(app)
+                .delete(`/book/${bookID}`)
+                .then(res => {
+
+                    expect(res.statusCode)
+                        .to
+                        .equal(200);
+
+                    expect(res.body.message)
+                        .to
+                        .equal(successMessage);
+
+                    done();
+                })
+                .catch(err => console.log(err));
+
+        });
+
+    }); //* End delete route
+
+    describe(`PUT routes`, () => {
+        bookID = null;
+        //Note: Create a book in the DB before testing Delete
+        before((done) => {
+            chai
+                .request(app)
+                .post("/book")
+                .send(testBook)
+                .then(res => {
+
+                    bookID = res.body.book._id;
+                    done();
+                })
+                .catch(err => console.log(err));
+        });
+
+        it(`Should update book`, () => {
+
+            const success = 'Book updated';
+            const updatedBook = {
+                ...testBook,
+                title: "New book"
+            };
+
+            chai
+                .request(app)
+                .put(`/book/${bookID}`)
+                .send(updatedBook)
+                .then(res => {
+
+                    expect(res.statusCode)
+                        .to
+                        .equal(200);
+
+                    expect(res.body.message)
+                        .to
+                        .equal(success);
+
+                    done();
+                })
+                .catch(err => console.log(err));
+
+        });
     })
 
 });

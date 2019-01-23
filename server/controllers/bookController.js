@@ -55,7 +55,9 @@ class BookController {
         Book.remove({
             _id: req.params.id
         }, (err, result) => {
-            res.json({message: "Book successfully deleted!", result});
+            res
+                .status(200)
+                .json({message: "Book successfully deleted!", result});
         });
     }
 
@@ -73,7 +75,9 @@ class BookController {
                 .save((err, book) => {
                     if (err) 
                         res.send(err);
-                    res.json({message: 'Book updated!', book});
+                    res
+                        .status(200)
+                        .json({message: 'Book updated!', book});
                 });
         });
     }

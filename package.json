@@ -4,7 +4,7 @@
   "description": "Boilerplate for quickly setting up a Mongodb, node express ap; under the assumption that Mocha and Chai will be used for integration testing",
   "main": "server/server.js",
   "scripts": {
-    "test": "mocha --timeout 20000",
+    "test": "mocha --timeout 10000",
     "start": "SET NODE_ENV=dev && node server/app.js",
     "dev": "SET NODE_ENV=dev && nodemon server/app.js"
   },

@@ -55,10 +55,9 @@ const closeServer = (PORT, DATABASE_URL) => {
             return new Promise((resolve, reject) => {
                 console.log(`Ending server...`);
 
-                server.close(() => {
-                    console.log(`Server has closed`);
-                    resolve();
-                })
+                server.close();
+
+                resolve();
             });
         })
 

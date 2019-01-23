@@ -5,10 +5,36 @@
 
 
 ### Objective
-* Boilerplate with dependencies
-  * Express, dotenv, mongoose, body-parser _installed_
-* devDependencies
-  * **mocha, chai, chai-http, nodemon, faker**
+ * Learn Integration testing for a REST api using Node, Express, MongoDB
+   * Using testing tools such as **mocha, chai, chai-http, morgan**
+
+ * Organize Express API better using **Controllers** resembling a more OOP way to organize communicating to DB
+ * Generate Test data to be used in Mocha tests
+
+
+### How to use
+
+ * Have a `.env` file 
+ * 3 env variables required
+   * DATABASE_URL:string
+     * URL to mongodb database to connect 
+     * For this code I'm using **MongoDB**
+   * PORT:number
+     * Port number for server to start 
+   * TEST_PORT:number
+     * Port number for the test suites to run **default:8080**
+
+* install dependencies
+  *  `npm install` or `yarn`
+
+* Run tests
+  * `npm run test`
+
+
+
+### Screenshots
+
+![Output photo](./img/output.png "Image output")
 
 ### Technologies used
 
@@ -16,10 +42,8 @@
 * Nodejs
 * Express
 * MongoDB
-
-
-
-### Instructions
+* Mocha
+* Chai
 
 
 

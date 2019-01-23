@@ -8,14 +8,15 @@ class BookController {
  */
     static getBooks(req, res) {
         //Query the DB and if no errors, send all the books
-        let query = Book.find({});
-        query.exec((err, books) => {
-            if (err) 
-                res.send(err);
-            
-            //If no errors, send them back to the client
-            res.json(books);
-        });
+        Book
+            .find({})
+            .then((books) => {
+
+                return res
+                    .status(200)
+                    .json(books);
+            })
+            .catch(err => console.log(err))
     }
 
     /*
